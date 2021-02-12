@@ -22,7 +22,7 @@ def takeCommandHindi():
 		try: 
 			print("Recognizing") 
 			Query = r.recognize_google(audio, language='hi-In') 
-			print("the statement was='", Query, "'") 
+			# print("the statement was='", Query, "'") 
 		except Exception as e: 
 			print(e) 
 			print("Repeat the statement") 
