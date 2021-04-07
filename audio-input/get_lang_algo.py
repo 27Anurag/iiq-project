@@ -133,7 +133,7 @@ languageCodeDict = {'af': 'afrikaans',
 coordinate_obj = geocoder.ipinfo('me')
 my_coords = coordinate_obj.latlng	#current coord
 
-print("my coord --> ",my_coords)
+print("my coords --> ",my_coords)
 
 
 def to_radians(theta):
@@ -178,7 +178,7 @@ def reverseGeocode(coordinates): 	# arg --> ((lat, lng), (lat, lng) ... )
 	Longitude = str(coordinates[1])
 	location = geolocator.reverse(Latitude+","+Longitude)
 	address = location.raw['address']
-	# print(location)
+	# print(address['state'])
 	try :
 		return address['state']
 	except:
