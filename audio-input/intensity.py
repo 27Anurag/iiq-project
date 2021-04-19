@@ -1,15 +1,27 @@
 import sounddevice as sd
 import numpy as np
 
-threshold = 1
+threshold = 1.420
+intensity_metric = 1
+# print(intensity_metric)
+
 
 def print_sound(indata, outdata, frames, time, status):
-    volume_norm = np.linalg.norm(indata)*10
-    if(volume_norm>threshold):
-    	print("Too loud!")
-    else:
-    	print(volume_norm)
+	global intensity_metric
+	volume_norm = np.linalg.norm(indata)*10
+	intensity_metric = max(intensity_metric, volume_norm)
+	print(volume_norm)
+	# print(intensity_metric)
 
 
-with sd.Stream(callback=print_sound):
-    sd.sleep(10000)
+def normalize(a):
+	lim = 8.69
+	return float(a/lim)
+
+def run():
+	with sd.Stream(callback=print_sound):
+		sd.sleep(3000)
+		print("max value --> ",normalize(intensity_metric))
+
+		
+run()

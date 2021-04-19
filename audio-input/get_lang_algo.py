@@ -245,6 +245,8 @@ def state_finder():
 
 def adding_langs():
     temp_langs = []
+    print("Please wait, scanning area to find commonly spoken languages ")
+
     circum_states = state_finder()
     #adding new langs to temp_langs
     for state in circum_states:

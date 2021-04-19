@@ -17,12 +17,44 @@ from googletrans import Translator
 import geocoder
 from math import radians, cos, sin, asin, sqrt
 
-
+from multiprocessing import Process
+import threading
 import get_lang_algo as GLA
 import nlp
-
+import intensity as ity
+import time
+import unimetric as uni
 #FLOW : get coords-->find state based on it --> get lang spoken around this state-->take input in these lang-->convert input to english-->sentiment anal
 
-final_langs = GLA.adding_langs()
-print("Langs working with --> ", final_langs)
-nlp.realtime_sa()
+final_score = False
+
+def audio():
+	nlp.realtime_sa()
+
+def video():
+	print("****** Video funtion called ******")
+
+def intensity():
+	ity.run()
+
+
+
+
+if __name__ == '__main__':
+
+	final_langs = GLA.adding_langs() #initialization
+	print("Langs working with --> ", final_langs)
+
+	threading.Thread(target=audio).start()	
+	# threading.Thread(target=video).start()
+	threading.Thread(target=intensity).start()
+
+	# time.sleep(10)
+
+	# print("Unimetric value --> ", uni.compute(ity.intensity_metric, nlp.anger_metric))
+
+
+		
+	
+
+

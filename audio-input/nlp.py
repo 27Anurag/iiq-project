@@ -16,6 +16,7 @@ import speech_recognition as sr
 from googletrans import Translator
 import geocoder
 from math import radians, cos, sin, asin, sqrt
+import threading
 
 import get_lang_algo as GLA
 
@@ -178,21 +179,36 @@ def sentimentAnalysisScores(sentence):
 emotion = ["neutral", "positive", "negative"]
 
 
+anger_metric = 0
+
 def realtime_sa():
+    global convertedEnglishSentence
+    translator = Translator()
 
-	translator = Translator()
-	#for now only using first lang, finally have to run parallely for diff langs
-	print(">>>>>>>>>> "+ str(GLA.final_langs[0]))
+    print(">>>>>>>>>> "+ str(GLA.final_langs[0]))
 
-	recognized_sentence=  takeCommandInLanguageIdentified(GLA.final_langs[0])
-	print("recognized sentences is "+ recognized_sentence)
+    recognized_sentence =  takeCommandInLanguageIdentified(GLA.final_langs[0])
+    print("recognized sentences is "+ recognized_sentence)
 
-	if(recognized_sentence.find('*')!=-1):
-	    print("emotion is negative")
-	else:
-	    convertedEnglishSentence = translator.translate(recognized_sentence)
-	    print("Converted to English Sentence is "+str(convertedEnglishSentence))
-	    sentimentScore = sentimentAnalysisScores(convertedEnglishSentence)
-	    # if(sentimentScore ==)
-	    print("emotion is "+ emotion[sentimentScore])
+    if(recognized_sentence.find('*')!=-1):
+        print("emotion is negative")
+        anger_metric = 1
+    else:
+        convertedEnglishSentence = translator.translate(recognized_sentence)
+        print("Converted to English Sentence is --> "+str(convertedEnglishSentence))
+        sentimentScore = sentimentAnalysisScores(convertedEnglishSentence)
+        print("emotion is --> "+ emotion[sentimentScore])
+        anger_metric = sentimentScore
+
+        # if(emotion[sentimentScore]=="negative"):
+        #     anger_metric = True 
+
+
+def multithread_langs():
+    threading.Thread(target=realtime_sa(GLA.final_langs[0])).start()
+    threading.Thread(target=realtime_sa(GLA.final_langs[1])).start()
+    threading.Thread(target=realtime_sa(GLA.final_langs[2])).start()
+
+
+
 
